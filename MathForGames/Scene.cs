@@ -6,42 +6,150 @@ namespace MathForGames
 {
     class Scene
     {
-        private Actor[] _actors;
+        private Entity[] _entities;
+
+        public bool Started { get; private set; }
+        public Entity[] List
+        {
+            get
+            {
+                return _entities;
+            }
+        }
 
         public Scene()
         {
-            _actors = new Actor[0];
+            _entities = new Entity[0];
         }
 
-        public void AddActor(Actor actor)
+        public void AddEntity(Entity entity)
         {
-            Actor[] appendedArray = new Actor[_actors.Length + 1];
-            for (int i = 0; i < _actors.Length; i++)
+            //creating a new array that has an aditional slot from an old array
+            Entity[] newEntities = new Entity[_entities.Length + 1];
+            //copy values from old array to the old array
+            for (int i = 0; i < _entities.Length; i++)
             {
-                 appendedArray[i] = _actors[i];
+                newEntities[i] = _entities[i];
             }
-            appendedArray[_actors.Length] = actor;
-            _actors = appendedArray;
+            //sets the new entity at the end of the new array
+            newEntities[_entities.Length] = entity;
+            //set old array to the new array with the new entity
+            _entities = newEntities;
         }
 
-        public void Start()
+        public bool RemoveEntity(int index)
+        {
+            //checks to see if index is out of bounds of array
+            if (index < 0 || index >= _entities.Length)
+            {
+                return false;
+            }
+            bool entityRemoved = false;
+
+            //creating a new array that has a slot taken away from an old array
+            Entity[] tempEntity = new Entity[_entities.Length - 1];
+            //create variable to access tempArray index
+            int j = 0;
+            //copy values from the old array to new Array
+            for (int i = 0; i < _entities.Length; i++)
+            {
+                //If the current index is not the index that needs to be removed
+                //add the value into the old array and increment j
+                if (i != index)
+                {
+                    tempEntity[j] = _entities[i];
+                    j++;
+                }
+                else //gives us our return value for debuging
+                {
+                    entityRemoved = true;
+                    if (_entities[i].Started)
+                    {
+                        _entities[i].End();
+                    }
+                }
+            }
+            //set the old arrat to be the tempArray
+            _entities = tempEntity;
+
+            return entityRemoved;
+        }
+
+        public bool RemoveEntity(Entity entity)
+        {
+            //if no entity was pass through dont run funtion
+            if (entity == null)
+            {
+                return false;
+            }
+
+            bool entityRemoved = false;
+
+            //creating a new array that has a slot taken away from an old array
+            Entity[] tempEntity = new Entity[_entities.Length - 1];
+            //create variable to access tempArray index
+            int j = 0;
+            //copy values from the old array to new Array
+            for (int i = 0; i < _entities.Length; i++)
+            {
+                //If the current index is not the index that needs to be removed
+                //add the value into the old array and increment j
+                if (entity != _entities[i])
+                {
+                    tempEntity[j] = _entities[i];
+                    j++;
+                }
+                else //gives us our return value for debuging
+                {
+                    entityRemoved = true;
+                    if (entity.Started)
+                    {
+                        entity.End();
+                    }
+                }
+            }
+            //set the old arrat to be the tempArray
+            _entities = tempEntity;
+
+            return entityRemoved;
+        }
+
+        public virtual void Start()
+        {
+            Started = true;
+        }//start
+
+        public virtual void Update(float deltaTime)
+        {
+            //for each entity
+            for (int i = 0; i < _entities.Length; i++)
+            {
+                if (!_entities[i].Started)
+                    _entities[i].Start();
+                _entities[i].Update(deltaTime);
+            }
+        }//update
+
+        public virtual void Draw()
         {
 
-        }
+            //for each entity
+            for (int i = 0; i < _entities.Length; i++)
+            {
+                _entities[i].Draw();
+            }
+        }//Draw
 
-        public void Update()
+        public virtual void End()
         {
-
-        }
-
-        public void Draw()
-        {
-
-        }
-
-        public void End()
-        {
-
-        }
+            //for each entity
+            for (int i = 0; i < _entities.Length; i++)
+            {
+                if (_entities[i].Started)
+                    _entities[i].End();
+            }
+            Started = false;
+        }//End
     }
 }
+
