@@ -17,10 +17,25 @@ namespace MathForGames
         {
             if (target == null)
                 return false;
-            
-            
 
-            return true;
+            Vector2 direction = Vector2.Normalize(Position - target.Position);
+
+            if (Vector2.DotProduct(Forward, direction) > 0)
+                return true;
+
+            return false;
+        }
+        public override void Update(float deltaTime)
+        {
+            if (CheckTargetInSight())
+            {
+                _rayColor = Color.RED;
+            }
+            else
+            {
+                _rayColor = Color.SKYBLUE;
+            }
+            base.Update(deltaTime);
         }
     }
 }
