@@ -8,26 +8,36 @@ namespace MathForGames
 {
     class Enemy: Entity
     {
-        public Entity target { get; private set; }
+        private Entity _target;
+        private Color _alertColor;
+        public Entity Target { get { return _target; } set { _target = value; } }
+        public Enemy(float x, float y, char icon = '■', ConsoleColor color = ConsoleColor.White)
+            : base(x, y, icon, color)
+        {
+        }
         public Enemy(float x, float y, Color rayColor, char icon = '■', ConsoleColor color = ConsoleColor.White)
             : base(x, y, rayColor, icon, color)
         {
         }
-        public bool CheckTargetInSight()
+        public bool CheckTargetInSight(float maxangle,float maxdistance)
         {
-            if (target == null)
+            if (Target == null)
                 return false;
 
-            Vector2 direction = Vector2.Normalize(Position - target.Position);
 
-            if (Vector2.DotProduct(Forward, direction) > 0)
-                return true;
+            Vector2 direction = Target.Position - Position;
+            float distance = direction.Magnitude;
+            float angle = (float)Math.Acos(Vector2.DotProduct(Forward, direction.Normalized));
+
+            
+                if (angle <= maxangle && distance <= maxdistance)
+                    return true;
 
             return false;
         }
         public override void Update(float deltaTime)
         {
-            if (CheckTargetInSight())
+            if (CheckTargetInSight(1,10))
             {
                 _rayColor = Color.RED;
             }

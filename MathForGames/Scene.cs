@@ -9,13 +9,6 @@ namespace MathForGames
         private Entity[] _entities;
 
         public bool Started { get; private set; }
-        public Entity[] List
-        {
-            get
-            {
-                return _entities;
-            }
-        }
 
         public Scene()
         {
@@ -126,6 +119,7 @@ namespace MathForGames
             {
                 if (!_entities[i].Started)
                     _entities[i].Start();
+
                 _entities[i].Update(deltaTime);
             }
         }//update

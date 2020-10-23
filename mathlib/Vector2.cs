@@ -79,5 +79,9 @@ namespace MathLib
         {
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y);
         }
+        public static float GetDistance(Vector2 lhs, Vector2 rhs)
+        {
+            return (lhs - rhs).Magnitude;
+        }
     }
 }
