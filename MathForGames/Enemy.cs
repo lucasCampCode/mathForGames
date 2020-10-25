@@ -10,7 +10,6 @@ namespace MathForGames
     class Enemy: Entity
     {
         private Entity _target;
-        private Color _alertColor;
         public Entity Target { get { return _target; } set { _target = value; } }
         public Enemy(float x, float y, char icon = '■', ConsoleColor color = ConsoleColor.White)
             : base(x, y, icon, color)
@@ -20,32 +19,34 @@ namespace MathForGames
             : base(x, y, rayColor, icon, color)
         {
         }
-        public bool CheckTargetInSight(float maxangle,float maxDistance)
+        public bool CheckTargetInSight(float maxAngle,float maxDistance)
         {
             if (Target == null)
                 return false;
 
-
+            System.Numerics.Vector2 center = new System.Numerics.Vector2(Position.X, Position.Y);
+            if (Game.Debug)
+            {
+                Raylib.DrawCircleSectorLines(center * Game.Scale,
+                    maxDistance * Game.Scale,
+                    (int)((maxAngle * 180 / Math.PI)+ 90),
+                    (int)((-maxAngle * 180 / Math.PI)+ 90),
+                    1,
+                    Color.GREEN);
+            }
             Vector2 direction = Target.Position - Position;
             float distance = direction.Magnitude;
             float angle = (float)Math.Acos(Vector2.DotProduct(Forward, direction.Normalized));
-
-            Vector2 topPosition = new Vector2(
-                (float)(_position.X + maxDistance * Math.Cos(-maxAngle)),
-                (float)(_position.Y + maxDistance * Math.Sin(-maxAngle)));
-
-            // Get the point -maxAngle distance along a circle where radius = maxDistance
-            Vector2 bottomPosition = new Vector2(
-                (float)(_position.X + maxDistance * Math.Cos(maxAngle)),
-                (float)(_position.Y + maxDistance * Math.Sin(maxAngle)));
-            if (angle <= maxangle && distance <= maxDistance)
+            
+            
+            if (angle <= maxAngle && distance <= maxDistance)
                     return true;
 
             return false;
         }
         public override void Update(float deltaTime)
         {
-            if (CheckTargetInSight(1,10))
+            if (CheckTargetInSight(0.5f,10))
             {
                 _rayColor = Color.RED;
             }

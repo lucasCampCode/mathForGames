@@ -70,22 +70,22 @@ namespace MathForGames
 
         public virtual void Draw()
         {
-            
-            int scale = 15;
-            Raylib.DrawText(_icon.ToString(), (int)(_position.X * scale), (int)(_position.Y * scale), scale,_rayColor);
+            Raylib.DrawText(_icon.ToString(), (int)(_position.X * Game.Scale), (int)(_position.Y * Game.Scale), Game.Scale,_rayColor);
             Raylib.DrawLine(
-                (int)(Position.X * scale),
-                (int)(Position.Y * scale),
-                (int)((Position.X + Forward.X) * scale),
-                (int)((Position.Y + Forward.Y) * scale),
+                (int)(Position.X * Game.Scale),
+                (int)(Position.Y * Game.Scale),
+                (int)((Position.X + Forward.X) * Game.Scale),
+                (int)((Position.Y + Forward.Y) * Game.Scale),
                 Color.BLACK
                 ) ;
-            if(Position.X >= 0 && Position.X < Console.WindowWidth
+            if (Position.X >= 0 && Position.X < Console.WindowWidth
                 && Position.Y >= 0 && Position.Y < Console.WindowHeight)
-            Console.ForegroundColor = _color;
-            Console.SetCursorPosition((int)_position.X, (int)_position.Y);
-            Console.Write(_icon);
-            Console.ForegroundColor = ConsoleColor.White;
+            {
+                Console.ForegroundColor = _color;
+                Console.SetCursorPosition((int)_position.X, (int)_position.Y);
+                Console.Write(_icon);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
 
 
         }

@@ -15,6 +15,7 @@ namespace MathForGames
         public static int CurrentSceneIndex { get { return _currentSceneIndex; } }
         public static ConsoleColor DefaultColor { get; set; } = ConsoleColor.DarkCyan;
         public static bool Debug { get; private set; } = true;
+        public static int Scale { get; set; } = 15;
         
         //Static function used to set game over without an instance of game.
         public static void SetGameOver(bool value)
