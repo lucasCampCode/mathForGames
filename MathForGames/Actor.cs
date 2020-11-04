@@ -102,7 +102,7 @@ namespace MathForGames
         public void UpdateTransform()
         {
             //SetTranslation(new Vector2(1,1));
-            SetRotation(0);
+            SetRotation(-(float)Math.Atan2(Velocity.Y, Velocity.X));
             SetScale(1,1);
 
             _transform = _translation * _rotation * _scale;
