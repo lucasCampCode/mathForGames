@@ -76,7 +76,6 @@ namespace MathForGames
         public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
             : this(x, y, icon, color)
         {
-            _transform = new Matrix3();
             _rayColor = rayColor;
         }
 
